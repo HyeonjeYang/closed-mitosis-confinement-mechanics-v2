@@ -1,0 +1,139 @@
+# Final analytical-paper parameters only. All values require source_doi and
+# an evidence-quality `status` (see src/closed_mitosis_mechanics/provenance.py
+# Status). No code in this package may hardcode a physical value outside this
+# file; source and evidence status are recorded beside every parameter.
+
+nuclear_envelope:
+  parameter_convention: LIM_EFFECTIVE_WHOLE_NE
+  parameter_convention_note: >-
+    The MAIN whole-NE effective pair (kappa_effective_NE, sigma_effective_NE)
+    is based on Lim et al. 2007's fitted tension-to-bending ratio
+    (65 um^-2) combined with their adopted typical B=4.00e-19 J, attributed
+    to Powers et al. 2002; the absolute B is not inferred from the shape fit.
+    This gives sigma_eff=0.026 pN/nm in the present whole-NE convention.
+    Lim & Huber 2009 Eq. 76 is convention-consistent with this pair: their
+    whole-NE energy F_NE=4*B1*int(H^2)dA+2*sigma_NE*A with B1=200 pN*nm and
+    sigma_NE=0.013 pN/nm maps to kappa_eff=2*B1=400 pN*nm and
+    sigma_eff=2*sigma_NE=0.026 pN/nm. The latter is a convention cross-check,
+    not an independent fit. Lim 2007's prose also states "T=T_NE" (apparent
+    tension equals bilayer tension), which appears inconsistent with its
+    fitted ratio and adopted modulus.
+
+  kappa_effective_NE:
+    value: 400
+    unit: pN*nm
+    note: >-
+      Effective whole-NE bending rigidity B=Bi+Bo=2*Bi. Lim et al. 2007
+      use the typical value B=4.00e-19 J adopted from Powers et al. 2002;
+      this value is not determined by their shape fit. It equals 2*B1 in
+      Lim & Huber 2009 Eq. 76 (B1=2e-19 J per bilayer).
+    source_doi: [10.1371/journal.pone.0000948, 10.1103/PhysRevE.65.041901, 10.1016/j.bpj.2008.10.074]
+    status: PRIMARY_SOURCE_VERIFIED
+
+  sigma_effective_NE:
+    value: 0.026
+    unit: pN/nm
+    note: >-
+      Effective whole-NE tension paired with kappa_effective_NE. Combining
+      Lim 2007's fitted ratio with the adopted typical B=4.00e-19 J gives
+      0.026 pN/nm in the whole-NE convention. Lim & Huber 2009 Eq. 76 is
+      convention-consistent: sigma_eff=2*sigma_NE=2*0.013=0.026 pN/nm. Do
+      NOT substitute sigma_bilayer=0.013 here (OBSOLETE_CONVENTION_MISMATCH).
+    source_doi: [10.1371/journal.pone.0000948, 10.1103/PhysRevE.65.041901, 10.1016/j.bpj.2008.10.074]
+    status: PRIMARY_SOURCE_VERIFIED
+
+  kappa_bilayer:
+    value: 200
+    unit: pN*nm
+    note: Per-bilayer bending modulus B1 (Lim & Huber 2009 Eq. 76, B1=2e-19 J). Provenance only.
+    source_doi: 10.1016/j.bpj.2008.10.074
+    status: PRIMARY_SOURCE_VERIFIED
+
+  sigma_bilayer:
+    value: 0.013
+    unit: pN/nm
+    note: >-
+      Per-bilayer actual tension T_NE/sigma_NE, inferred from the fitted
+      fitted membrane tension-to-bending ratio of 65 um^-2 (Lim 2007) / sigma_NE per-bilayer bending modulus B1=65 um^-2 (Lim & Huber 2009)
+      with the assumed per-bilayer B1. Provenance only -- pairs with
+      kappa_bilayer, never with kappa_effective_NE.
+    source_doi: [10.1371/journal.pone.0000948, 10.1016/j.bpj.2008.10.074]
+    status: DERIVED
+
+  begley_kappa_unresolved:
+    value: 40
+    unit: pN*nm
+    note: >-
+      Begley et al. 2026 Table 1, cited to Lim et al. 2007 and Lim & Huber
+      2009, but neither cited source contains a 40 pN*nm value under any
+      interpretation identified (per-bilayer is 200, whole-NE effective is
+      400). Paired with begley_sigma this exactly reproduces Begley's own
+      reported f0=6.4 pN, so it is not an isolated typo in one field -- both
+      values were evidently used together. Do not infer a specific cause
+      (transcription error, unstated convention, deliberate choice) without
+      author clarification. Never selectable as the MAIN kappa.
+    source_doi: 10.1002/cm.22035
+    cited_source_doi: [10.1371/journal.pone.0000948, 10.1016/j.bpj.2008.10.074]
+    status: UNRESOLVED_PROVENANCE
+
+  begley_sigma:
+    value: 0.013
+    unit: pN/nm
+    note: Begley et al. 2026 Table 1's own tension value, paired with begley_kappa_unresolved only.
+    source_doi: 10.1002/cm.22035
+    status: PRIMARY_SOURCE_VERIFIED
+
+spindle:
+  buckling_force_illustrative:
+    value: 31
+    unit: pN
+    note: >-
+      ILLUSTRATIVE_BASELINE, not a universal spindle-force constant. Ward
+      et al. 2014 Fig. 4E wild-type fit F_c=A/L^4 (A=buckling_prefactor_A),
+      evaluated at L=5 um by Begley et al. 2026 Eq. 1/Table 1. A single
+      model-calibrated point estimate; no SE/CI reported for A or F_b in
+      either source.
+    source_doi: [10.1002/cm.22035, 10.7554/eLife.03398]
+    status: MODEL_CALIBRATED
+
+  buckling_prefactor_A:
+    value: 1.94e4
+    unit: pN*um^4
+    note: >-
+      Wild-type S. pombe fit prefactor for F_b(L)=A/L^4, extracted by Begley
+      et al. 2026 from Ward et al. 2014 Figure 4E (not published as a number
+      in Ward 2014's own text). Species- and architecture-specific, not a
+      universal spindle material constant.
+    source_doi: [10.1002/cm.22035, 10.7554/eLife.03398]
+    status: MODEL_CALIBRATED
+
+  buckling_onset_length_window_um:
+    value: [4, 5]
+    unit: um
+    note: >-
+      Begley et al. 2026's own stated buckling-onset length window
+      ("the onset of buckling occurs fairly abruptly when spindles reach a
+      length of 4-5 um"), offered as their justification for evaluating F_b
+      at L=5 um. Used here only as two literature-motivated scenario
+      endpoints for F_b(L)=A/L^4, not a confidence interval.
+    source_doi: 10.1002/cm.22035
+    status: MODEL_CALIBRATED
+
+  spindle_length_pombe_um:
+    value: [12.0, 15.0]
+    unit: um
+    note: S. pombe normal mitotic spindle final length range (Lim et al. 2007 Figure 1 caption).
+    source_doi: 10.1371/journal.pone.0000948
+    status: PRIMARY_SOURCE_VERIFIED
+
+confinement:
+  epithelial_rounding_pressure:
+    value: [170, 890]
+    unit: Pa
+    note: >-
+      CONTEXT_ONLY animal-epithelial (MDCK) mitotic cell-rounding force
+      range, converted to pressure (Sorce et al. 2015). Not an S. pombe
+      environmental-pressure measurement; used only to bound a plausible
+      confinement-pressure scale.
+    source_doi: 10.1038/ncomms9872
+    status: CONTEXT_ONLY
